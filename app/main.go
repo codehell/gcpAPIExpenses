@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"time"
+	"google.golang.org/appengine/user"
 )
 
 func main() {
@@ -40,9 +41,9 @@ func expensesHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, string(jsonUsers))
 	case "/test":
-		expense := models.Expense{
+		expense := models.Movement{
 			Username: "codehell",
-			Amount: 3223,
+			Amount: -3223,
 			Description: "Compra en carrefour incluyendo una sarten",
 			Tags: []string{"comida", "cocina"},
 			CreateAt: time.Now().Unix(),
@@ -50,5 +51,16 @@ func expensesHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		err := models.StoreExpense(ctx, &expense)
 		log.Println(err)
+	case "/auth":
+		w.Header().Set("Content-type", "text/html; charset=utf-8")
+		ctx := appengine.NewContext(r)
+		u := user.Current(ctx)
+		if u == nil {
+			url, _ := user.LoginURL(ctx, "/auth")
+			fmt.Fprintf(w, `<a href="%s">Sign in or register</a>`, url)
+			return
+		}
+		url, _ := user.LogoutURL(ctx, "/auth")
+		fmt.Fprintf(w, `Welcome, %s! (<a href="%s">sign out</a>)`, u, url)
 	}
 }
