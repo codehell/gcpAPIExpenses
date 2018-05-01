@@ -43,7 +43,7 @@ func mainHandler(w http.ResponseWriter, r *http.Request) {
 			controllers.StoreMovement(ctx, w, r)
 		}
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
-		
+
 	case "/ok":
 		w.WriteHeader(http.StatusOK)
 
