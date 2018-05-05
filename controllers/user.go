@@ -22,19 +22,19 @@ func GetUsers(ctx context.Context, w http.ResponseWriter) {
 
 func StoreUser(ctx context.Context, w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	errFun := func(err error) {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-	}
+
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.BadRequestApiError(w)
+		return
 	}
 	hashed, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
-		errFun(err)
+		responses.BadRequestApiError(w)
+		return
 	}
 	user.Password = string(hashed)
 	if err := user.StoreUser(ctx); err != nil {
-		errFun(err)
+		responses.BadRequestApiError(w)
 	}
 	w.WriteHeader(http.StatusCreated)
 }
