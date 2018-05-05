@@ -18,7 +18,7 @@ func GetMovements(ctx context.Context, w http.ResponseWriter)  {
 		fmt.Fprint(w, err)
 	}
 	jsonExpenses, _ := json.Marshal(movements)
-	responses.OkJsonRespond(w, jsonExpenses)
+	responses.JsonResponse(w, jsonExpenses, http.StatusOK)
 }
 
 func StoreMovement(ctx context.Context, w http.ResponseWriter, r *http.Request) {

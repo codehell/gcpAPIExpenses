@@ -40,7 +40,8 @@ func (user *User) StoreUser(ctx context.Context) error {
 
 
 func (user *User) GetUser(ctx context.Context) error {
-	q := datastore.NewQuery("User").Filter("__key__=", user.Username)
+	key := datastore.NewKey(ctx, "User", user.Username, 0, nil)
+	q := datastore.NewQuery("User").Filter("__key__=", key)
 	t := q.Run(ctx)
 	if _, err := t.Next(user); err != nil {
 		return err
