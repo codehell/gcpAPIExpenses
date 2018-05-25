@@ -6,15 +6,15 @@ import (
 )
 
 type ApiError struct {
-	Code    string `json:"code"`
-	Reason  string `json:"reason"`
+	Code   string `json:"code"`
+	Reason string `json:"reason"`
 }
 
 //Api Codes
 const (
 	MethodNotAllowed = "methodNotAllowed"
-	BadRequest = "badRequest"
-	LoginFailed = "loginFailed"
+	BadRequest       = "badRequest"
+	LoginFailed      = "loginFailed"
 )
 
 func (e ApiError) NewApiError(code int, w http.ResponseWriter) {
@@ -35,7 +35,7 @@ func MethodNotAllowedApiError(w http.ResponseWriter) {
 
 func BadRequestApiError(w http.ResponseWriter) {
 	apiError := ApiError{
-		Code: BadRequest,
+		Code:   BadRequest,
 		Reason: "I can't do nothing with this shit",
 	}
 	apiError.NewApiError(http.StatusBadRequest, w)

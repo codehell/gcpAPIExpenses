@@ -7,7 +7,7 @@ import (
 
 type Movement struct {
 	ID          int64    `json:"id,omitempty" datastore:"-"`
-	Username    string   `json:"username"`
+	Email       string   `json:"email"`
 	Amount      int32    `json:"amount"`
 	Description string   `json:"description"`
 	Tags        []string `json:"tags"`
@@ -29,9 +29,9 @@ func GetMovements(ctx context.Context) ([]Movement, error) {
 	return expenses, nil
 }
 
-func StoreMovement(ctx context.Context, expense *Movement) error {
+func StoreMovement(ctx context.Context, movement *Movement) error {
 	key := datastore.NewIncompleteKey(ctx, "Movement", nil)
-	_, err := datastore.Put(ctx, key, expense)
+	_, err := datastore.Put(ctx, key, movement)
 	if err != nil {
 		return err
 	}

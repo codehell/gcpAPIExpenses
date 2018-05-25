@@ -1,8 +1,8 @@
 package structs
 
 type Claim struct {
-	iss string
-	email string
-	iat int64
-	exp int64
+	Iss string
+	Email string
+	Iat int64
+	Exp int64
 }
